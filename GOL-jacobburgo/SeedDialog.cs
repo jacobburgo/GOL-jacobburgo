@@ -16,5 +16,25 @@ namespace GOL_jacobburgo
         {
             InitializeComponent();
         }
+
+        public int GetSeed()
+        {
+            return (int)seedNumericUpDown.Value;
+        }
+
+        public int GetTimerInterval()
+        {
+            return (int)timerNumericUpDown.Value;
+        }
+
+        public void SetSeed(int seed)
+        {
+            seedNumericUpDown.Value = seed;
+        }
+
+        public void SetTimerInterval(int miliseconds)
+        {
+            timerNumericUpDown.Value = miliseconds;
+        }
     }
 }
