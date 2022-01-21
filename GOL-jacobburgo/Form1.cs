@@ -30,12 +30,14 @@ namespace GOL_jacobburgo
         bool displayGrid = true;
         bool displayNeighborCount = true;
 
+        int seed;
+
         public Form1()
         {
             InitializeComponent();
 
-                // Setup the timer
-                timer.Interval = 100; // milliseconds
+            // Setup the timer
+            timer.Interval = 100; // milliseconds
             timer.Tick += Timer_Tick;
             timer.Enabled = false; // start timer running
         }
@@ -343,11 +345,17 @@ namespace GOL_jacobburgo
         private void seedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SeedDialog sd = new SeedDialog();
-
+            sd.SetTimerInterval(timer.Interval);
+            if (seed == 0)
+            {
+                seed = 123;
+            }
+            sd.SetSeed(seed);
 
             if (DialogResult.OK == sd.ShowDialog())
             {
-
+                timer.Interval = sd.GetTimerInterval();
+                seed = sd.GetSeed();
             }
         }
     }

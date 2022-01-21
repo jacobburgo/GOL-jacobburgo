@@ -73,6 +73,11 @@ namespace GOL_jacobburgo
             // seedNumericUpDown
             // 
             this.seedNumericUpDown.Location = new System.Drawing.Point(250, 80);
+            this.seedNumericUpDown.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
             this.seedNumericUpDown.Name = "seedNumericUpDown";
             this.seedNumericUpDown.Size = new System.Drawing.Size(134, 20);
             this.seedNumericUpDown.TabIndex = 3;
@@ -80,6 +85,11 @@ namespace GOL_jacobburgo
             // timerNumericUpDown
             // 
             this.timerNumericUpDown.Location = new System.Drawing.Point(250, 117);
+            this.timerNumericUpDown.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
             this.timerNumericUpDown.Name = "timerNumericUpDown";
             this.timerNumericUpDown.Size = new System.Drawing.Size(134, 20);
             this.timerNumericUpDown.TabIndex = 4;
