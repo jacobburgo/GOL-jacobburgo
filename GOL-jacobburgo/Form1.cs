@@ -30,6 +30,11 @@ namespace GOL_jacobburgo
         bool displayGrid = true;
         bool displayNeighborCount = true;
 
+        // Controls which boundary type is being used:
+        // true: Finite
+        // false: Torrodial
+        bool neighborCountType = true;
+
         int seed;
 
         public Form1()
@@ -40,19 +45,28 @@ namespace GOL_jacobburgo
             timer.Interval = 100; // milliseconds
             timer.Tick += Timer_Tick;
             timer.Enabled = false; // start timer running
+
+            displayGrid = Properties.Settings.Default.displayGrid;
         }
 
         // Calculate the next generation of cells
         private void NextGeneration()
         {
-
+            int count;
             // Iterate through the universe in the y, top to bottom & in the x, left to right.
             // It then assigns true/false to universe[x,y] based on conditionals for later painting
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    int count = CountNeighborsFinite(x, y);
+                    if (neighborCountType == true)
+                    {
+                        count = CountNeighborsFinite(x, y);
+                    }
+                    else
+                    {
+                        count = CountNeighborsToroidal(x, y);
+                    }
 
                     if (count < 2 && universe[x, y] == true)
                     {
@@ -102,6 +116,19 @@ namespace GOL_jacobburgo
             NextGeneration();
         }
 
+        private void Randomize()
+        {
+            // Random randSeed = new Random(3); Seed
+            // Random randTime = new Random(); Time
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    // randTime.Next(0, 2); Time
+                    // if random number = 0 universe[x,y] = true;
+                }
+            }
+        }
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
             Font font = new Font("Arial", 20f);
@@ -136,8 +163,17 @@ namespace GOL_jacobburgo
                     cellRect.Y = y * cellHeight;
                     cellRect.Width = cellWidth;
                     cellRect.Height = cellHeight;
+                    int count = 0;
 
-                    int count = CountNeighborsFinite(x, y); 
+                    if (neighborCountType == true)
+                    {
+                        count = CountNeighborsFinite(x, y);
+                    }
+                    else
+                    {
+                        count = CountNeighborsToroidal(x, y);
+                    }
+
 
                     // Fill the cell with a brush if alive
                     if (universe[x, y] == true)
@@ -232,6 +268,45 @@ namespace GOL_jacobburgo
                     if (yCheck >= yLen)
                     {
                         continue;
+                    }
+
+                    if (universe[xCheck, yCheck] == true) count++;
+                }
+            }
+            return count;
+        }
+
+        private int CountNeighborsToroidal(int x, int y)
+        {
+            int count = 0;
+            int xLen = universe.GetLength(0);
+            int yLen = universe.GetLength(1);
+            for (int yOffset = -1; yOffset <= 1; yOffset++)
+            {
+                for (int xOffset = -1; xOffset <= 1; xOffset++)
+                {
+                    int xCheck = x + xOffset;
+                    int yCheck = y + yOffset;
+                    
+                    if (xOffset == 0 && yOffset == 0)
+                    {
+                        continue;
+                    }
+                    if (xCheck < 0)
+                    {
+                        xCheck = xLen - 1;
+                    }
+                    if (yCheck < 0)
+                    {
+                        yCheck = yLen - 1;
+                    }
+                    if (xCheck >= xLen)
+                    {
+                        xCheck = 0;
+                    }
+                    if (yCheck >= yLen)
+                    {
+                        yCheck = 0;
                     }
 
                     if (universe[xCheck, yCheck] == true) count++;
@@ -337,6 +412,7 @@ namespace GOL_jacobburgo
             if (DialogResult.OK == udd.ShowDialog()) 
             {
                 universe = new bool[udd.GetUniverseWidth(), udd.GetUniverseHeight()];
+                scratchPadUniverse = new bool[udd.GetUniverseWidth(), udd.GetUniverseHeight()];
 
                 graphicsPanel.Invalidate();
             }
@@ -357,6 +433,41 @@ namespace GOL_jacobburgo
                 timer.Interval = sd.GetTimerInterval();
                 seed = sd.GetSeed();
             }
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Properties.Settings.Default.displayGrid = displayGrid;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void resetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reset();
+
+            displayGrid = Properties.Settings.Default.displayGrid;
+        }
+
+        private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reload();
+
+            
+        }
+
+        private void torrodialToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            neighborCountType = false;
+
+            graphicsPanel.Invalidate();
+        }
+
+        private void finiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            neighborCountType = true;
+
+            graphicsPanel.Invalidate();
         }
     }
 }
