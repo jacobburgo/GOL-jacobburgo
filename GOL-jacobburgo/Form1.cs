@@ -14,9 +14,10 @@ namespace GOL_jacobburgo
     {
 
         // The universe array
-        bool[,] universe = new bool[25 , 25];
-        bool[,] scratchPadUniverse = new bool[25, 25];
-
+        bool[,] universe = new bool[30, 30];
+        bool[,] scratchPadUniverse = new bool[30, 30];
+        int universeWidth, universeHeight;
+        
         // Drawing colors
         Color gridColor = Color.Black;
         Color cellColor = Color.LawnGreen;
@@ -26,6 +27,7 @@ namespace GOL_jacobburgo
 
         // Generation count
         int generations = 0;
+        int seed = 0;
 
         bool displayGrid = true;
         bool displayNeighborCount = true;
@@ -34,8 +36,6 @@ namespace GOL_jacobburgo
         // true: Finite
         // false: Torrodial
         bool neighborCountType = true;
-
-        int seed;
 
         public Form1()
         {
@@ -46,7 +46,14 @@ namespace GOL_jacobburgo
             timer.Tick += Timer_Tick;
             timer.Enabled = false; // start timer running
 
-            displayGrid = Properties.Settings.Default.displayGrid;
+            gridColor = Properties.Settings.Default.gridColor;
+            cellColor = Properties.Settings.Default.cellColor;
+            graphicsPanel.BackColor = Properties.Settings.Default.BackColor;
+            timer.Interval = Properties.Settings.Default.timerInterval;
+            universeWidth = Properties.Settings.Default.universeX;
+            universeHeight = Properties.Settings.Default.universeY;
+            universe = new bool[universeWidth, universeHeight];
+            scratchPadUniverse = new bool[universeWidth, universeHeight];
         }
 
         // Calculate the next generation of cells
@@ -103,10 +110,13 @@ namespace GOL_jacobburgo
             generations++;
 
             // Update status strip generations
-            /* This will be changed into a more appealing UI and include addition information */
-            toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
+            generationsToolStripStatusLabel.Text = "Generations: " + generations.ToString();
+            IntervalToolStripStatusLabel.Text = "Interval: " + timer.Interval;
+            seedCountToolStripStatusLabel.Text = "Seed: " + seed;
+
 
             graphicsPanel.Invalidate();
+            statusStrip.Invalidate();
 
         }
 
@@ -116,19 +126,39 @@ namespace GOL_jacobburgo
             NextGeneration();
         }
 
-        private void Randomize()
+        private void RandomizeBySeed()
         {
-            // Random randSeed = new Random(3); Seed
-            // Random randTime = new Random(); Time
+            Random randSeed = new Random(seed);
+            //Random randTime = new Random();
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    // randTime.Next(0, 2); Time
-                    // if random number = 0 universe[x,y] = true;
+                    int seedCheck = randSeed.Next(0, 2);
+                    if (seedCheck == 0)
+                    {
+                        universe[x, y] = true;
+                    }
                 }
             }
         }
+
+        private void RandomizeByTime()
+        {
+            Random randTime = new Random();
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    int timeCheck = randTime.Next(0, 2);
+                    if (timeCheck == 0)
+                    {
+                        universe[x, y] = true;
+                    }
+                }
+            }
+        }
+
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
             Font font = new Font("Arial", 20f);
@@ -163,7 +193,7 @@ namespace GOL_jacobburgo
                     cellRect.Y = y * cellHeight;
                     cellRect.Width = cellWidth;
                     cellRect.Height = cellHeight;
-                    int count = 0;
+                    int count;
 
                     if (neighborCountType == true)
                     {
@@ -235,6 +265,7 @@ namespace GOL_jacobburgo
 
                 // Tell Windows you need to repaint
                 graphicsPanel.Invalidate();
+                statusStrip.Invalidate();
             }
         }
 
@@ -270,7 +301,10 @@ namespace GOL_jacobburgo
                         continue;
                     }
 
-                    if (universe[xCheck, yCheck] == true) count++;
+                    if (universe[xCheck, yCheck] == true)
+                    {
+                        count++;
+                    }
                 }
             }
             return count;
@@ -408,11 +442,15 @@ namespace GOL_jacobburgo
             UniverseDimensionsDialog udd = new UniverseDimensionsDialog();
             udd.SetUniverseWidth(universe.GetLength(0));
             udd.SetUniverseHeight(universe.GetLength(1));
+            universeWidth = udd.GetUniverseWidth();
+            universeHeight = udd.GetUniverseHeight();
 
             if (DialogResult.OK == udd.ShowDialog()) 
             {
                 universe = new bool[udd.GetUniverseWidth(), udd.GetUniverseHeight()];
                 scratchPadUniverse = new bool[udd.GetUniverseWidth(), udd.GetUniverseHeight()];
+                universeWidth = udd.GetUniverseWidth();
+                universeHeight = udd.GetUniverseHeight();
 
                 graphicsPanel.Invalidate();
             }
@@ -422,9 +460,10 @@ namespace GOL_jacobburgo
         {
             SeedDialog sd = new SeedDialog();
             sd.SetTimerInterval(timer.Interval);
+            Random randSeed = new Random();
             if (seed == 0)
             {
-                seed = 123;
+                seed = randSeed.Next(0, 499);
             }
             sd.SetSeed(seed);
 
@@ -437,23 +476,38 @@ namespace GOL_jacobburgo
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Properties.Settings.Default.displayGrid = displayGrid;
+            Properties.Settings.Default.gridColor = gridColor;
+            Properties.Settings.Default.cellColor = cellColor;
+            Properties.Settings.Default.universeX = universeWidth;
+            Properties.Settings.Default.universeY = universeHeight;
+            Properties.Settings.Default.BackColor = graphicsPanel.BackColor;
+            Properties.Settings.Default.timerInterval = timer.Interval;
 
-            Properties.Settings.Default.Save();
+             Properties.Settings.Default.Save();
         }
 
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.Reset();
 
-            displayGrid = Properties.Settings.Default.displayGrid;
+            gridColor = Properties.Settings.Default.gridColor;
+            cellColor = Properties.Settings.Default.cellColor;
+            universeWidth = Properties.Settings.Default.universeX;
+            universeHeight = Properties.Settings.Default.universeY;
+            graphicsPanel.BackColor = Properties.Settings.Default.BackColor;
+            timer.Interval = Properties.Settings.Default.timerInterval;
         }
 
         private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.Reload();
 
-            
+            gridColor = Properties.Settings.Default.gridColor;
+            cellColor = Properties.Settings.Default.cellColor;
+            universeHeight = Properties.Settings.Default.universeY;
+            universeWidth = Properties.Settings.Default.universeX;
+            graphicsPanel.BackColor = Properties.Settings.Default.BackColor;
+            timer.Interval = Properties.Settings.Default.timerInterval;
         }
 
         private void torrodialToolStripMenuItem_Click(object sender, EventArgs e)
@@ -461,6 +515,28 @@ namespace GOL_jacobburgo
             neighborCountType = false;
 
             graphicsPanel.Invalidate();
+        }
+
+        private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RandomizeBySeed();
+            graphicsPanel.Invalidate();
+        }
+
+        private void fromTimeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RandomizeByTime();
+            graphicsPanel.Invalidate();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void finiteToolStripMenuItem_Click(object sender, EventArgs e)

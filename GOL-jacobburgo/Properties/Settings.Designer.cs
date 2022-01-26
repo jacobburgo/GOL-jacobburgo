@@ -25,13 +25,73 @@ namespace GOL_jacobburgo.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool displayGrid {
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color gridColor {
             get {
-                return ((bool)(this["displayGrid"]));
+                return ((global::System.Drawing.Color)(this["gridColor"]));
             }
             set {
-                this["displayGrid"] = value;
+                this["gridColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LawnGreen")]
+        public global::System.Drawing.Color cellColor {
+            get {
+                return ((global::System.Drawing.Color)(this["cellColor"]));
+            }
+            set {
+                this["cellColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LightGray")]
+        public global::System.Drawing.Color BackColor {
+            get {
+                return ((global::System.Drawing.Color)(this["BackColor"]));
+            }
+            set {
+                this["BackColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int universeX {
+            get {
+                return ((int)(this["universeX"]));
+            }
+            set {
+                this["universeX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int universeY {
+            get {
+                return ((int)(this["universeY"]));
+            }
+            set {
+                this["universeY"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int timerInterval {
+            get {
+                return ((int)(this["timerInterval"]));
+            }
+            set {
+                this["timerInterval"] = value;
             }
         }
     }
