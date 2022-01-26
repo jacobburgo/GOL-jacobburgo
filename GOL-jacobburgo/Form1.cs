@@ -566,33 +566,15 @@ namespace GOL_jacobburgo
                     {
                         if (universe[x, y] == true)
                         {
-                            currentRowString += "0";
+                            currentRowString += '0';
                         }
                         else
                         {
-                            currentRowString += ".";
+                            currentRowString += '.';
                         }
                     }
                     writer.WriteLine(currentRowString);
                 }
-                
-                    // Create a string to represent the current row.
-                    //String currentRow = string.Empty;
-
-                    // Iterate through the current row one cell at a time.
-          
-                        // If the universe[x,y] is alive then append 'O' (capital O)
-                        // to the row string.
-
-                        // Else if the universe[x,y] is dead then append '.' (period)
-                        // to the row string.
-                    
-
-                    // Once the current row has been read through and the 
-                    // string constructed then write it to the file using WriteLine.
-                
-
-                // After all rows and columns have been written then close the file.
                 writer.Close();
             }
         }
@@ -605,7 +587,64 @@ namespace GOL_jacobburgo
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "All Files|*.*|Cells|*.cells";
+            dlg.FilterIndex = 2;
 
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                StreamReader reader = new StreamReader(dlg.FileName);
+
+                int maxWidth = 0;
+                int maxHeight = 0;
+
+                while (!reader.EndOfStream)
+                {
+                    string row = reader.ReadLine();
+
+                    if (row.StartsWith("!"))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        maxHeight++;
+                    }
+                    maxWidth = row.Length;
+                }
+
+                universe = new bool[maxWidth, maxHeight];
+                scratchPadUniverse = new bool[maxWidth, maxHeight];
+
+                reader.BaseStream.Seek(0, SeekOrigin.Begin);
+
+                int y = 0;
+                while (!reader.EndOfStream)
+                {
+                    string row = reader.ReadLine();
+                    if (row.StartsWith("!"))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        for (int xPos = 0; xPos < row.Length; xPos++)
+                        {
+                            if (row[xPos] == 'O')
+                            {
+                                universe[xPos, y] = true;
+                            }
+                            else if (row[xPos] == '.')
+                            {
+                                universe[xPos, y] = false;
+                            }
+                        }
+                    }
+                    y++;
+                }
+                reader.Close();
+            }
+            graphicsPanel.Invalidate();
         }
 
     }
