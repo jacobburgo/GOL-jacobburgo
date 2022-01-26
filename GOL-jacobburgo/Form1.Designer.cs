@@ -192,27 +192,22 @@ namespace GOL_jacobburgo
             // 
             // hUDToolStripMenuItem
             // 
-            this.hUDToolStripMenuItem.Checked = true;
-            this.hUDToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.hUDToolStripMenuItem.Name = "hUDToolStripMenuItem";
-            this.hUDToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.hUDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.hUDToolStripMenuItem.Text = "HUD";
+            this.hUDToolStripMenuItem.Click += new System.EventHandler(this.hUDToolStripMenuItem_Click);
             // 
             // neighborCountToolStripMenuItem
             // 
-            this.neighborCountToolStripMenuItem.Checked = true;
-            this.neighborCountToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.neighborCountToolStripMenuItem.Name = "neighborCountToolStripMenuItem";
-            this.neighborCountToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.neighborCountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.neighborCountToolStripMenuItem.Text = "Neighbor Count";
             this.neighborCountToolStripMenuItem.Click += new System.EventHandler(this.neighborCountToolStripMenuItem_Click);
             // 
             // gridToolStripMenuItem
             // 
-            this.gridToolStripMenuItem.Checked = true;
-            this.gridToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.gridToolStripMenuItem.Name = "gridToolStripMenuItem";
-            this.gridToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.gridToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.gridToolStripMenuItem.Text = "Grid";
             this.gridToolStripMenuItem.Click += new System.EventHandler(this.gridToolStripMenuItem_Click);
             // 
@@ -366,10 +361,8 @@ namespace GOL_jacobburgo
             // 
             // torrodialToolStripMenuItem
             // 
-            this.torrodialToolStripMenuItem.Checked = true;
-            this.torrodialToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.torrodialToolStripMenuItem.Name = "torrodialToolStripMenuItem";
-            this.torrodialToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.torrodialToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.torrodialToolStripMenuItem.Text = "Torrodial";
             this.torrodialToolStripMenuItem.Click += new System.EventHandler(this.torrodialToolStripMenuItem_Click);
             // 

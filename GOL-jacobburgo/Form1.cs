@@ -31,6 +31,7 @@ namespace GOL_jacobburgo
 
         bool displayGrid = true;
         bool displayNeighborCount = true;
+        bool displayHUD = true;
 
         // Controls which boundary type is being used:
         // true: Finite
@@ -182,7 +183,15 @@ namespace GOL_jacobburgo
             // A rectangle to represent each cell in pixels
             RectangleF cellRect = RectangleF.Empty;
 
-
+            string generationsString = "Generations: " + generations.ToString();
+            string intervalString = "Interval: " + timer.Interval;
+            string seedString = "Seed: " + seed;
+            if (displayHUD)
+            {
+                e.Graphics.DrawString(generationsString, font, cellBrush, new Point(0, graphicsPanel.ClientSize.Height - 30));
+                e.Graphics.DrawString(intervalString, font, cellBrush, new Point(0, graphicsPanel.ClientSize.Height - 60));
+                e.Graphics.DrawString(seedString, font, cellBrush, new Point(0, graphicsPanel.ClientSize.Height - 90));
+            }
 
             for (int y = 0; y < universe.GetLength(1); y++)
             {
@@ -517,6 +526,13 @@ namespace GOL_jacobburgo
             graphicsPanel.Invalidate();
         }
 
+        private void finiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            neighborCountType = true;
+
+            graphicsPanel.Invalidate();
+        }
+
         private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RandomizeBySeed();
@@ -534,16 +550,16 @@ namespace GOL_jacobburgo
 
         }
 
+        private void hUDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            displayHUD = !displayHUD;
+            graphicsPanel.Invalidate();
+        }
+
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void finiteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            neighborCountType = true;
-
-            graphicsPanel.Invalidate();
-        }
     }
 }
