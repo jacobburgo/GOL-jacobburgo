@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace GOL_jacobburgo
 {
-    public partial class UniverseDimensionsDialog : Form
+    public partial class UniverseDimensionsDialog : System.Windows.Forms.Form
     {
         public UniverseDimensionsDialog()
         {

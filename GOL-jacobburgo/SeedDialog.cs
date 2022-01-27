@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace GOL_jacobburgo
 {
-    public partial class SeedDialog : Form
+    public partial class SeedDialog : System.Windows.Forms.Form
     {
         public SeedDialog()
         {
