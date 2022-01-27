@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace GOL_jacobburgo
 {
-    public partial class MainForm : System.Windows.Forms.Form
+    public partial class Form1 : System.Windows.Forms.Form
     {
         #region Fields
         // The universe array
@@ -43,7 +43,7 @@ namespace GOL_jacobburgo
         #endregion
 
         /** Handles initialization and the application of settings */
-        public MainForm()
+        public Form1()
         {
             InitializeComponent();
 
